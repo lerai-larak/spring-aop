@@ -21,6 +21,8 @@ public class MainDemoApp {
 		accountDao.addAccount();
 		membershipDao.addAccount(); //just to test if the pointcut will evaluate to true for this method
 		
+		membershipDao.addSillyMember();
+		
 		//close the context
 		context.close();
 	}

@@ -10,9 +10,9 @@ public class MyDemoLoggingAspect {
 
 	//this class contains a set of advices
 	
-	@Before("execution(* add*())") //match any method that starts with 'add' and retun type is void
-//	@Before("execution(public void updateAccount())")
+	//match an add method any return type and a parameter 'Account'
+	@Before("execution(* add*(com.luv2code.aopdemo.Account))") 
 	public void beforeAddAccountAdvice() {
-		System.out.println("\n====> Executing @Before advice on method addAccount()");
+		System.out.println("\n====> Executing @Before advice on method addAccount(Account)");
 	}
 }

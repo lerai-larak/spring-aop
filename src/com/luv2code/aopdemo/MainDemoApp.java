@@ -18,7 +18,7 @@ public class MainDemoApp {
 		MembershipDao membershipDao = context.getBean("membershipDao",MembershipDao.class);
 		
 		//call the business method
-		accountDao.addAccount(new Account());
+		accountDao.addAccount(new Account(), true);
 		membershipDao.addAccount(); //just to test if the pointcut will evaluate to true for this method
 		
 		membershipDao.addSillyMember();

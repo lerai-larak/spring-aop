@@ -10,8 +10,8 @@ public class MyDemoLoggingAspect {
 
 	//this class contains a set of advices
 	
-	//match an add method any return type, a parameter of type 'Account' followed by 0 or more parameters 
-	@Before("execution(* add*(com.luv2code.aopdemo.Account, ..))") 
+	//match an add method any return type, and any parameter 
+	@Before("execution(* add*(..))") 
 	public void beforeAddAccountAdvice() {
 		System.out.println("\n___________________________________________________________>"
 				+ "\n Executing @Before advice on method addAccount(Account,boolean)"

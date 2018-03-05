@@ -19,9 +19,11 @@ public class MainDemoApp {
 		
 		//call the business method
 		accountDao.addAccount(new Account(), true);
-		membershipDao.addAccount(); //just to test if the pointcut will evaluate to true for this method
+		accountDao.doSomeWork();
 		
+		//just to test if the pointcut will evaluate to true for this method
 		membershipDao.addSillyMember();
+		membershipDao.addAccount();
 		
 		//close the context
 		context.close();

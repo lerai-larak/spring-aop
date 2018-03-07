@@ -32,11 +32,11 @@ public class AccountDao {
 	}
 
 	public void addAccount(Account account, boolean vipFlag) {
-		System.out.println(getClass()+ ": Doing my DB work");
+		System.out.println(this.getClass()+ ":  Doing my DB work");
 	}
 	
 	public boolean doSomeWork() {
-		System.out.println("Doing some additionale work!");
+		System.out.println(this.getClass()+ ": Doing some additional work!");
 		return true;
 	}
 }

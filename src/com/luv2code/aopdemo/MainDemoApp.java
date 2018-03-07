@@ -21,12 +21,6 @@ public class MainDemoApp {
 		accountDao.addAccount(new Account(), true);
 		accountDao.doSomeWork();
 		
-		//call the getters and setters in dao
-		accountDao.setName("foobar");
-		accountDao.setServiceCode("Primeier");
-		accountDao.getName();
-		accountDao.getServiceCode();
-		
 		//just to test if the pointcut will evaluate to true for this method
 		membershipDao.addSillyMember();
 		membershipDao.addAccount();

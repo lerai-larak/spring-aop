@@ -29,15 +29,24 @@ public class CloudLogSyncAspect {
 			pointcut="execution(* com.luv2code.aopdemo.dao.AccountDao.findAccounts(..))",
 			returning="result")
 	public void afterReturningFindAccountsAdvice(JoinPoint theJoinPoint, List<Account>result) {
+		
 		String method = theJoinPoint.getSignature().toShortString();
 		
 		System.out.println("\nCloudLogging printing");
 		System.out.println(method);
 		System.out.println("--------------------------------------------------------------");
 		System.out.println(result);
+		
+		convertAccNamesToUpperCase(result);
+		System.out.println(result);
 	}
 	
-	
+	//post-process the data intercepted
+	private void convertAccNamesToUpperCase(List<Account>result) {
+		for (Account account : result) {
+			account.setName(account.getName().toUpperCase());
+		}
+	}
 	
 	
 	

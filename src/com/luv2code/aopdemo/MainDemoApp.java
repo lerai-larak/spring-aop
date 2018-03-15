@@ -12,13 +12,16 @@ public class MainDemoApp {
 		//read spring configuration
 		AnnotationConfigApplicationContext context = 
 				new AnnotationConfigApplicationContext(DemoConfig.class);
-		//get the bean from spring container
 		
+		//get the bean from spring container
 		AccountDao accountDao = context.getBean("accountDao",AccountDao.class);
 		MembershipDao membershipDao = context.getBean("membershipDao",MembershipDao.class);
 		
 		//call the business method
-		accountDao.addAccount(new Account(), true);
+		Account acc = new Account();
+		acc.setName("Allex");
+		acc.setLevel("Premier");
+		accountDao.addAccount(acc, true);
 		accountDao.doSomeWork();
 		
 		//just to test if the pointcut will evaluate to true for this method

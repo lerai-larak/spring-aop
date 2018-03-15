@@ -19,6 +19,14 @@ public class SharedExpressions {
 	@Pointcut("execution(* com.luv2code.aopdemo.dao.*.set*(..))")
 	public void setter() {}
 	
+	// create pointcut for methods in dao package with Account as a parameter
+	@Pointcut("execution(* com.luv2code.aopdemo.dao.*.*(com.luv2code.aopdemo.Account,..))")
+	public void hasAccountAsParam() {}
+	
+	// assemble pointcut for business method, makes use of other pointcuts
+	@Pointcut("forDaoPackage() && !(getter() || setter()) && hasAccountAsParam()")
+	public void businessMethods() {}
+	
 	// create pointcut: include package ... exclude getter/setter
 	@Pointcut("forDaoPackage() && !(getter() || setter())")
 	public void forDaoPackageNoGetterSetter() {}

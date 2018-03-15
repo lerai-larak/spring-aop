@@ -1,5 +1,7 @@
 package com.luv2code.aopdemo;
 
+import java.util.List;
+
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.luv2code.aopdemo.dao.AccountDao;
@@ -17,17 +19,13 @@ public class MainDemoApp {
 		AccountDao accountDao = context.getBean("accountDao",AccountDao.class);
 		MembershipDao membershipDao = context.getBean("membershipDao",MembershipDao.class);
 		
-		//call the business method
-		Account acc = new Account();
-		acc.setName("Allex");
-		acc.setLevel("Premier");
-		accountDao.addAccount(acc, true);
-		accountDao.doSomeWork();
+		List<Account> accounts = accountDao.findAccounts();
 		
-		//just to test if the pointcut will evaluate to true for this method
-		membershipDao.addSillyMember();
-		membershipDao.addAccount();
-		
+		//display the accounts
+		System.out.println("\nMain App printing");
+		System.out.println("--------------------------------------------------------------");
+		System.out.println(accounts);
+		System.out.println("--------------------------------------------------------------");
 		//close the context
 		context.close();
 	}

@@ -3,6 +3,7 @@ package com.luv2code.aopdemo.aspect;
 import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -53,6 +54,15 @@ public class CloudLogSyncAspect {
 		System.out.println(method);
 		System.out.println("--------------------------------------------------------------");
 		System.out.println(exception);
+	}
+	
+	//@After advice runs regardless of if the method completes or throws an exception
+	@After("execution(* com.luv2code.aopdemo.dao.AccountDao.findAccounts(..))")
+	public void afterFinallyAdvice(JoinPoint theJoinPoint) {
+		String method = theJoinPoint.getSignature().toShortString();
+		System.out.println("\nCloudLogging printing");
+		System.out.println("executed @After finally for " + method);
+		System.out.println("--------------------------------------------------------------");
 	}
 	
 	//post-process the data intercepted

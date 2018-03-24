@@ -7,7 +7,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.luv2code.aopdemo.dao.AccountDao;
 import com.luv2code.aopdemo.dao.MembershipDao;
 
-public class AfterThrowingDemoApp {
+public class AfterFinallyDemoApp {
 
 	public static void main(String[] args) {
 		

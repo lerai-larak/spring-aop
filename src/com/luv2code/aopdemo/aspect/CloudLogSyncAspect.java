@@ -46,12 +46,14 @@ public class CloudLogSyncAspect {
 		try {
 			result = joinPoint.proceed();
 		} catch (Exception e) {
-			//log the exception, then give the user a custom message 
+			//log the exception, then give the user a custom message, then rethrow the exception
 			logger.warning(e.getMessage());
 			
 			result = "You got this message because the "
 			+joinPoint.getSignature().toShortString()
 			+" exprienced an issue!";
+			
+			throw e;
 		}
 		
 		long end = System.currentTimeMillis();

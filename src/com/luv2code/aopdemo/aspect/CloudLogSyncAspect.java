@@ -1,11 +1,14 @@
 package com.luv2code.aopdemo.aspect;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -13,6 +16,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.luv2code.aopdemo.Account;
+import com.luv2code.aopdemo.AroundDemoAppWithLogger;
 
 /** 
  * JionPoints provide metadata about the method executing and can be used to get method signatures and 
@@ -25,6 +29,25 @@ import com.luv2code.aopdemo.Account;
 @Component
 @Order(1)
 public class CloudLogSyncAspect {
+	
+	private static Logger logger = 
+			Logger.getLogger(CloudLogSyncAspect.class.getSimpleName());
+	
+	@Around("execution(* com.luv2code.aopdemo.service.TrafficFortunesService.getFortune())")
+	public Object aroundGetFortuneService(ProceedingJoinPoint joinPoint) throws Throwable {
+		
+		//print the method we are adving on
+		logger.info("------------------------------------------");
+		logger.info("Executing @Around advice for: " + joinPoint.getSignature().toShortString());
+		//get begining timestamp, execute the method, get end timestamp, compute duration
+		long begin = System.currentTimeMillis();
+		Object result = joinPoint.proceed();
+		long end = System.currentTimeMillis();
+		long duration = end - begin;
+		logger.info("Method execution took: " + duration/1000.0 + "seconds!");
+		logger.info("------------------------------------------");
+		return result;
+	}
 
 	//add a new advice for @afterReturning on the findAccounts method
 	@AfterReturning(
@@ -34,13 +57,13 @@ public class CloudLogSyncAspect {
 		
 		String method = theJoinPoint.getSignature().toShortString();
 		
-		System.out.println("\nCloudLogging printing");
-		System.out.println(method);
-		System.out.println("--------------------------------------------------------------");
-		System.out.println(result);
+		logger.info("\nCloudLogging printing");
+		logger.info(method);
+		logger.info("--------------------------------------------------------------");
+		logger.info(result.toString());
 		
 		convertAccNamesToUpperCase(result);
-		System.out.println(result);
+		logger.info(result.toString());
 	}
 	
 	@AfterThrowing(
@@ -50,19 +73,19 @@ public class CloudLogSyncAspect {
 		
 		String method = theJoinPoint.getSignature().toShortString();
 		
-		System.out.println("\nCloudLogging printing");
-		System.out.println(method);
-		System.out.println("--------------------------------------------------------------");
-		System.out.println(exception);
+		logger.info("\nCloudLogging printing");
+		logger.info(method);
+		logger.info("--------------------------------------------------------------");
+		logger.info(exception.toString());
 	}
 	
 	//@After advice runs regardless of if the method completes or throws an exception
 	@After("execution(* com.luv2code.aopdemo.dao.AccountDao.findAccounts(..))")
 	public void afterFinallyAdvice(JoinPoint theJoinPoint) {
 		String method = theJoinPoint.getSignature().toShortString();
-		System.out.println("\nCloudLogging printing");
-		System.out.println("executed @After finally for " + method);
-		System.out.println("--------------------------------------------------------------");
+		logger.info("\nCloudLogging printing");
+		logger.info("executed @After finally for " + method);
+		logger.info("--------------------------------------------------------------");
 	}
 	
 	//post-process the data intercepted
@@ -76,12 +99,12 @@ public class CloudLogSyncAspect {
 	
 	@Before("com.luv2code.aopdemo.aspect.SharedExpressions.businessMethods()")
 	public void logToCloudAsync(JoinPoint theJoinPoint) {
-			System.out.println("Applying cloud logging aspect");
+			logger.info("Applying cloud logging aspect");
 	
 	//display method signature
 	
 	MethodSignature methodSig = (MethodSignature)theJoinPoint.getSignature();
-	System.out.println("Method: " + methodSig);
+	logger.info("Method: " + methodSig);
 	
 	//display method arguments
 	
@@ -89,13 +112,13 @@ public class CloudLogSyncAspect {
 	Object[] arguments =  theJoinPoint.getArgs();
  	//loop through the args 
 	for(Object tempArg : arguments) {
-		System.out.println(tempArg);
+		logger.info(tempArg.toString());
 		
 		if(tempArg instanceof Account) {
 			//downcast and get specific stuff about the account
 			Account account = (Account) tempArg;
-			System.out.println("Account Name: " + account.getName());
-			System.out.println("Account Level: " + account.getLevel());
+			logger.info("Account Name: " + account.getName());
+			logger.info("Account Level: " + account.getLevel());
 		}
 	}
 	}	

@@ -19,4 +19,11 @@ public class TrafficFortunesService {
 		return "Expect traffic this morning...";
 	}
 
+	public String getFortune(boolean tripWire) {
+		if(tripWire) {
+			throw new RuntimeException("Some runtime exception thrown!");
+		}
+		return getFortune(); //reuse!
+	}
+
 }

@@ -16,7 +16,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.luv2code.aopdemo.Account;
-import com.luv2code.aopdemo.AroundDemoAppWithLogger;
+import com.luv2code.aopdemo.AroundHandleExceptionDemoApp;
 
 /** 
  * JionPoints provide metadata about the method executing and can be used to get method signatures and 
@@ -33,7 +33,7 @@ public class CloudLogSyncAspect {
 	private static Logger logger = 
 			Logger.getLogger(CloudLogSyncAspect.class.getSimpleName());
 	
-	@Around("execution(* com.luv2code.aopdemo.service.TrafficFortunesService.getFortune())")
+	@Around("execution(* com.luv2code.aopdemo.service.TrafficFortunesService.getFortune(..))")
 	public Object aroundGetFortuneService(ProceedingJoinPoint joinPoint) throws Throwable {
 		
 		//print the method we are adving on
@@ -41,7 +41,19 @@ public class CloudLogSyncAspect {
 		logger.info("Executing @Around advice for: " + joinPoint.getSignature().toShortString());
 		//get begining timestamp, execute the method, get end timestamp, compute duration
 		long begin = System.currentTimeMillis();
-		Object result = joinPoint.proceed();
+		Object result = null;
+		
+		try {
+			result = joinPoint.proceed();
+		} catch (Exception e) {
+			//log the exception, then give the user a custom message 
+			logger.warning(e.getMessage());
+			
+			result = "You got this message because the "
+			+joinPoint.getSignature().toShortString()
+			+" exprienced an issue!";
+		}
+		
 		long end = System.currentTimeMillis();
 		long duration = end - begin;
 		logger.info("Method execution took: " + duration/1000.0 + "seconds!");

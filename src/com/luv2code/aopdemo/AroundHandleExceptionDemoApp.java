@@ -6,10 +6,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import com.luv2code.aopdemo.service.TrafficFortunesService;
 
-public class AroundDemoAppWithLogger {
+public class AroundHandleExceptionDemoApp {
 
 	private static Logger logger = 
-			Logger.getLogger(AroundDemoAppWithLogger.class.getSimpleName());
+			Logger.getLogger(AroundHandleExceptionDemoApp.class.getSimpleName());
 	
 	public static void main(String[] args) {
 		
@@ -25,7 +25,8 @@ public class AroundDemoAppWithLogger {
 		logger.info("Inside Main");
 		logger.info("Calling getFortuneService ...");
 		
-		logger.info("Results from method call: " + myFortuneService.getFortune());
+		boolean tripWire =  true;
+		logger.info("Results from method call: " + myFortuneService.getFortune(tripWire));
 		logger.info("Finished ");
 		//close the context
 		context.close();

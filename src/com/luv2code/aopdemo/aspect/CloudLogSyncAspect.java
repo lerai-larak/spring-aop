@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -39,6 +40,19 @@ public class CloudLogSyncAspect {
 		
 		convertAccNamesToUpperCase(result);
 		System.out.println(result);
+	}
+	
+	@AfterThrowing(
+			pointcut="execution(* com.luv2code.aopdemo.dao.AccountDao.findAccounts(..))",
+			throwing="exception")
+	public void afterThrowingFindAccountsAdvice(JoinPoint theJoinPoint, Exception exception) {
+		
+		String method = theJoinPoint.getSignature().toShortString();
+		
+		System.out.println("\nCloudLogging printing");
+		System.out.println(method);
+		System.out.println("--------------------------------------------------------------");
+		System.out.println(exception);
 	}
 	
 	//post-process the data intercepted

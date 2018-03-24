@@ -43,7 +43,11 @@ public class AccountDao {
 		return true;
 	}
 	
-	public List<Account> findAccounts(){
+	public List<Account> findAccounts(Boolean tripper){
+		
+		if(tripper) {
+			throw new RuntimeException("A simulated error was encountered");
+		}
 		List<Account> accounts = new ArrayList<>();
 		Account temp1 = new Account("John","Silver");
 		Account temp2 = new Account("Borne","Platinum");

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.luv2code.aopdemo.dao.AccountDao;
 import com.luv2code.aopdemo.dao.MembershipDao;
 
-public class MainDemoApp {
+public class AfterThrowingDemoApp {
 
 	public static void main(String[] args) {
 		
@@ -19,7 +19,15 @@ public class MainDemoApp {
 		AccountDao accountDao = context.getBean("accountDao",AccountDao.class);
 		MembershipDao membershipDao = context.getBean("membershipDao",MembershipDao.class);
 		
-		List<Account> accounts = accountDao.findAccounts();
+		
+		//simulate an Exception
+		List<Account> accounts = null;
+		try {
+			boolean tripWire = true;
+			accounts = accountDao.findAccounts(tripWire);
+			}catch (Exception e) {
+				System.out.println("An exception was thrown: "+ e);
+			}
 		
 		//display the accounts
 		System.out.println("\nMain App printing");
